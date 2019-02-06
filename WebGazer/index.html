@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+	  <script src="https://webgazer.cs.brown.edu/webgazer.js"></script> 
+  </head>
+  <body>
+    <div id="mydiv" align="left" style="width: 300px; margin-left: 340px;">
+      <h1>Run to Recognize Face and Eyes</h1>
+      <p>Do multiple clicks on the screen while looking to the cursor</p> 
+      <p>Both clicks and cursor movements make the predictions more accurate.</p>
+    </div>
+    
+    <canvas width="11px" height="781px" id="renderCanvas" style="display:none;"></canvas>
+    
+    <div id="videoContainer">
+      <video id="webgazerVideoFeed" 
+        style="display: block; position: absolute; top: 0px; left: 0px; margin: 0px;" 
+        width="320" 
+        height="240">
+      </video>
+    </div>
+    <canvas id="webgazerVideoCanvas" width="320" height="240" style="display: none;"></canvas>
+    <div style="position: fixed; z-index: 99999; left: -5px; top: -5px; width: 10px; height: 10px; background: red; display: block; border-radius: 100%; opacity: 0.7;"></div>
+    <canvas id="overlay" width="320" height="240" style="position: absolute; top: 0px; left: 0px; margin: 0px;"></canvas>
+    <script src="index.js"></script>
+  </body>
+</html>

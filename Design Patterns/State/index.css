@@ -1,0 +1,40 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/c2/BearsEarsUSGS-2D.jpg");
+    background-repeat: no-repeat;
+  }
+  
+  .rectangle {
+    border: 1px solid black;
+    height: 150px;
+    width: 52px;
+    background: black;
+  }
+  
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin: 5px;
+  }
+  
+  .red {  
+    background: red;
+    filter: brightness(50%);
+  }
+  
+  .yellow {
+    background: yellow;
+    filter: brightness(50%);
+  }
+  
+  .green {
+    background: green;
+    filter: brightness(50%);
+  }
+  
+  .lighten {
+    filter: brightness(100%);
+  }

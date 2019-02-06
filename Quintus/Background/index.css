@@ -1,0 +1,8 @@
+/* 
+ Remove scrollbars so there is no conflict when moving player up and down
+*/
+body {
+    overflow:hidden;
+    padding: 0;
+    margin: 0;
+  }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="thisApp">
+<head>
+<meta charset="UTF-8">
+<title>AngularJS - Example 4</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"> </script>
+<script>  
+    var thisApp = angular.module('thisApp', []);
+     
+    thisApp.controller('thisController', function NameController($scope){
+        $scope.firstName = 'Alex';
+         
+        $scope.$watch('lastName', function(newValue, oldValue){
+            console.log('--- $watch ---');
+            console.log('Old value: ' + oldValue);          
+            console.log('New value: ' + newValue);
+            console.log('--------------');
+        });
+         
+        setTimeout(function(){
+            $scope.lastName = "Ramod";
+            $scope.$apply();
+        }, 1000);
+    });
+</script>
+</head>
+<p>Check console output</p>
+<body ng-controller="thisController">
+First Name: <input ng-model="firstName" type="text" /><br>
+Last Name: <input ng-model="lastName" type="text" /><br>
+Hello, {{firstName}} {{lastName}}
+</body>
+</html>

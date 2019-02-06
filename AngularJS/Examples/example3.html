@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="thisApp">
+<head>
+<meta charset="UTF-8">
+<title>AngularJS - Example 3</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"> </script>
+<script>  
+    var thisApp = angular.module('thisApp', []);
+    thisApp.controller('NameController', function NameController($scope){
+        $scope.firstName = 'Alex';
+        $scope.lastName = 'Ramod';
+    });
+</script>
+</head>
+<body ng-controller="NameController">
+First Name: <input ng-model="firstName" type="text" /><br>
+Last Name: <input ng-model="lastName" type="text" /><br>
+Hello, {{firstName}} {{lastName}}
+</body>
+</html>

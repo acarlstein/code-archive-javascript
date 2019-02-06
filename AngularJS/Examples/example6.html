@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="thisApp">
+<head>
+<meta charset="UTF-8">
+<title>AngularJS - Example 6</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"> </script>
+<script>  
+    var thisApp = angular.module('thisApp', []);
+     
+    thisApp.controller('countriesController', function NameController($scope){
+         
+        // We will fetch this data in the next example using JSON
+        $scope.countries = [
+            {"name": "The United States", "state": "Colorado"},
+            {"name": "The United States", "state": "Florida"},
+            {"name": "The United States", "state": "New York"},
+            {"name": "Argentina", "state": "Buenos Aires"},
+            {"name": "Argentina", "state": "Pellegrini"},
+            {"name": "Uruguay", "state": "Carmelo"},
+            {"name": "Uruguay", "state": "Colonia"},
+            {"name": "Uruguay", "state": "Conchillas"}
+        ];
+         
+        $scope.sortField = 'name';
+        $scope.reverse = true;
+         
+    });
+</script>
+</head>
+<body ng-controller="countriesController">
+    Search: <input ng-model="query" type="text" />
+    <table border="1">
+        <tr>
+            <th><a href="" ng-click="sortField = 'name'; reverse = !reverse">Country</a></th>
+            <th><a href="" ng-click="sortField = 'state'; reverse = !reverse">State/Provincia</a></th>
+        </tr>
+        <tr ng-repeat="country in countries | filter: query | orderBy: sortField:reverse">
+            <td>
+                {{country.name}}
+            </td>
+            <td>
+                {{country.state}}
+            </td>
+        </tr>     
+    </table>
+    <br>
+</body>
+</html>

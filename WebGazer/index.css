@@ -1,0 +1,9 @@
+#videoContainer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border: solid black 1px;
+    width:  320px;
+    height: 240px;
+    background: gray;
+  }

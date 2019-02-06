@@ -1,0 +1,19 @@
+.user-card {
+    margin: 1em;
+    border: 1px solid black;
+  }
+  
+  .user-card img {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .user-card > * {
+    vertical-align: middle;
+  }
+  
+  .user-card-title {
+    font-size: 1.25em;
+  }
+  
+  

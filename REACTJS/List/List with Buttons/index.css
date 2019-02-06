@@ -1,0 +1,39 @@
+.user-card {
+  margin: 1em;
+  border: 1px solid black;
+}
+
+.user-card img {
+  width: 75px;
+  height: 75px;
+}
+
+.user-card > * {
+  vertical-align: middle;
+}
+
+/* style={{display: 'inline-block', marginLeft: 10, marginRight: 10}} */
+.user-card > div {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/*  style={{fontWeight: 'bold'}} */
+.user-card-title {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+#form-add-user {
+  margin-left: 15px;
+}
+
+#button-remove-user{
+  float: right;
+  border-radius: 0px 0px 0px 5px;
+  cursor: hand;
+}
+
+
+

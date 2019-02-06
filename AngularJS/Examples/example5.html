@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="thisApp">
+<head>
+<meta charset="UTF-8">
+<title>AngularJS - Example 5</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"> </script>
+<script>  
+    var thisApp = angular.module('thisApp', []);
+     
+    thisApp.controller('employeesController', function NameController($scope){
+         
+        $scope.employeeNames = ['Diego', 'Marina', 'Marc'];
+         
+        $scope.addEmployeeName = function() {
+            $scope.employeeNames.push($scope.enteredEmployeeName);
+            $scope.enteredEmployeeName = "";
+        }
+         
+        $scope.removeEmployeeName = function(employeeName){
+            var index = $scope.employeeNames.indexOf(employeeName);
+            $scope.employeeNames.splice(index, 1);
+        }
+         
+    });
+</script>
+</head>
+<body ng-controller="employeesController">
+ 
+    <form name="employeeNameForm" ng-submit="addEmployeeName()">
+        Employee Name: <input name="employeeNameTextBox"
+                              ng-model="enteredEmployeeName"
+                              type="text"
+                              required />        
+        <input type="submit" value="add">
+        <div role="alert">
+            <span class="error" ng-show="employeeNameForm.employeeNameTextBox.$error.required">
+                * The employee name cannot be empty
+            </span>
+        </div>    
+    </form>
+    <ul>
+        <li ng-repeat="employeeName in employeeNames">
+            {{employeeName}} <a href="" ng-click="removeEmployeeName(employeeName)">[Remove]</a>
+        </li>
+    </ul>
+ 
+</body>
+</html>

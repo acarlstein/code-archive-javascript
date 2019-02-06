@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AngularJS - Example 7</title>
+<style>
+    @import url('http://getbootstrap.com/2.3.2/assets/css/bootstrap.css');
+     
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        text-align: center;
+    }
+     
+    ul li { display: inline; }
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+  
+<script>    
+    var thisApp = angular.module('thisApp', []);
+  
+    // Controllers
+    var TableController = thisApp.controller('TableController', function ($scope, $http, $filter, serviceFilteredList) {
+      
+        $scope.pageSize = 4;
+        $scope.reverse = false;           
+        
+        $scope.selectedItems =  [
+                                    {numOfRows: 4, text: "4 rows"},
+                                    {numOfRows: 3, text: "3 rows"},
+                                    {numOfRows: 2, text: "2 rows"},
+                                    {numOfRows: 1, text: "1 row"},                                                                        
+                                ];
+                                 
+        $scope.allItems = getEmptyData();
+            
+        $scope.getCountriesFromUrl = function($scope, $http, url){
+            $http.get(url).success(function(data, status, headers, config){
+                console.log("[!] Success:");
+                $scope.allItems = data;
+                $scope.sort();
+            }).error(function(data, status, headers, config){
+                var errorMessage = "[!] Failure:"
+                                 + "    -> Headers: " + headers
+                                 + "    -> Status: "+ status
+                                 + "    -> Config: "+ config
+                                 + "    -> Data: "+ data;
+                console.log(errorMessage);
+            });            
+        }
+     
+        var url = "https://raw.githubusercontent.com/astockwell/countries-and-provinces-states-regions/master/countries.json";
+        $scope.getCountriesFromUrl($scope, $http, url);       
+         
+        $scope.add = function () {
+            $scope.allItems.push({
+                code: $scope.newCode,
+                name: $scope.newName,
+                continent: $scope.newContinent
+            });
+            $scope.resetAll();
+        }
+         
+        $scope.resetAll = function () {
+            $scope.filteredList = $scope.allItems;
+            $scope.newCode = '';
+            $scope.newName = '';
+            $scope.newContinent = '';
+            $scope.Header = ['','',''];
+            $scope.currentPage = 0;
+            $scope.searchText = '';
+        }
+         
+        $scope.search = function () {
+            $scope.filteredList = serviceFilteredList.searched($scope.allItems, $scope.searchText);
+             
+            if ($scope.searchText == '') {
+                $scope.filteredList = $scope.allItems;
+            }
+             
+            $scope.pagination(); 
+        }
+     
+        $scope.range = function (input, total) {
+            var ret = [];
+             
+            if (!total) {
+                total = input;
+                input = 0;
+            }
+             
+            for (var i = input; i < total; ++i) {
+                if (i != 0 && i != total - 1) {
+                    ret.push(i);
+                }
+            }
+             
+            return ret;
+        };        
+         
+        $scope.pagination = function () {
+            $scope.ItemsByPage = serviceFilteredList.paged( $scope.filteredList, $scope.pageSize );         
+        };
+     
+        $scope.setPage = function () {
+            $scope.currentPage = this.n;
+        };
+     
+        $scope.firstPage = function () {
+            $scope.currentPage = 0;
+        };
+     
+        $scope.lastPage = function () {
+            $scope.currentPage = $scope.ItemsByPage.length - 1;
+        };
+     
+         
+        $scope.sort = function(sortBy){
+            $scope.resetAll();  
+             
+            $scope.columnToOrder = sortBy; 
+                  
+            $scope.filteredList = $filter('orderBy')($scope.filteredList, $scope.columnToOrder, $scope.reverse); 
+                                    
+            $scope.reverse = !$scope.reverse;   
+             
+            $scope.pagination();    
+        };
+         
+        $scope.$watch("display", function(newValue, oldValue){            
+            $scope.pageSize = parseInt(newValue.numOfRows);
+            $scope.sort()
+        });
+         
+      $scope.display = $scope.selectedItems[0];
+                 
+    });
+ 
+    // Services
+    thisApp.service('serviceFilteredList', function () {
+         
+        this.searched = function (listsOfValues, toSearch) {
+            return _.filter(listsOfValues, function (i) {
+                return searchInAllFields(i, toSearch);
+            });        
+        };
+     
+        this.paged = function (listsOfValues, pageSize) {
+            retVal = [];
+            if (undefined !== listsOfValues) {
+                for (var i = 0; i < listsOfValues.length; ++i) {
+                    var pageIndex = Math.floor(i / pageSize) 
+                    if (i % pageSize === 0) {
+                        retVal[pageIndex] = [listsOfValues[i]];
+                    } else {
+                        retVal[pageIndex].push(listsOfValues[i]);
+                    }
+                }
+            }
+            return retVal;
+        };
+  
+    });
+ 
+    //Inject Services
+    TableController.$inject = ['$scope', '$filter','serviceFilteredList'];
+     
+    function searchInAllFields(item, toSearch) {     
+        return (item.name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || 
+                item.continent.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || 
+                item.continent.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    }
+         
+    function getEmptyData() { return [{}]; }
+     
+</script>
+</head>
+<body>
+  
+    <div ng-app="thisApp">
+        <div ng-controller="TableController">
+            <div class="input-group">
+                Search: <input ng-model="searchText"
+                               ng-change="search()"
+                               placeholder="Search in all fields"
+                               type="search"
+                               class="form-control" /> 
+            <span>
+                <span>
+                     Display: <select id="displaySelect"
+                                       name="displaySelect"
+                                       ng-model="display"
+                                       ng-options="display as display.text for display in selectedItems">                                        
+                              </select>                    
+                </span>
+            </span>
+         </div>
+         <table class="table table-hover data-table">
+            <thead>
+                <tr>
+                    <th class="name"> 
+                        <a ng-click="sort('name')" href="#"> 
+                            Country <span class="{{Header[1]}}"></span>
+                        </a> 
+                    </th>
+                    <th class="code"> 
+                        <a href="#" ng-click="sort('code',$event)">
+                            Code <span class="{{Header[0]}}"></span>
+                        </a>
+                    </th>
+                    <th class="continent"> 
+                        <a ng-click="sort('continent')" href="#"> 
+                            Continent <span class="{{Header[2]}}"></span>
+                         </a> 
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
+                    <td>{{item.name}}</td>
+                    <td>{{item.code}}</td>
+                    <td>{{item.continent}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul id="navcontainer" name="navcontainer" class="pagination pagination-sm">
+            <li ng-class="{active:0}">
+                <a href="#" ng-click="firstPage()">First</a>
+            </li>
+            <li ng-repeat="n in range(ItemsByPage.length)"> 
+                <a href="#" ng-click="setPage()" ng-bind="n + 1">1</a>
+            </li>
+            <li>
+                <a href="#" ng-click="lastPage()">Last</a>
+            </li>
+        </ul>
+         
+    </div>
+ 
+</body>
+</html>
