@@ -1,0 +1,74 @@
+<!-- https://cdnjs.cloudflare.com/ajax/libs/winjs/4.4.3/js/base.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/winjs/4.4.3/js/ui.js -->
+
+<!-- Simple template for the ListView instantiation  -->
+<div class="smallListIconTextTemplate" 
+     data-win-control="WinJS.Binding.Template" 
+     style="display: none">
+    <div class="smallListIconTextItem">
+        <span class="date-picker">
+          <img src="#" 
+             class="smallListIconTextItem-Image date-picker" 
+             data-win-bind="src: picture"
+             onerror="this.style.display='none'"/>
+        </span>
+        <div class="smallListIconTextItem-Detail">
+            <h4 class="win-h4" data-win-bind="textContent: title"></h4>
+            <h6 class="win-h6" data-win-bind="textContent: text"></h6>
+        </div>
+    </div>
+</div>
+
+<div class="listLayoutTopHeaderTemplate" data-win-control="WinJS.Binding.Template">
+    <div class="listLayoutTopHeaderTemplateRoot">
+        <div data-win-bind="innerHTML: title"></div>
+    </div>
+</div>
+
+<!-- Elements used for header and footer elements for ListView -->
+<div class="headerFooterPlaceholder">
+    <div class="header">
+        <span style="display: inline-block;">
+          <h2 class="win-h2">Ordered ListView with Simulated Loading</h2>
+          <p>
+              <span>Total Items: </span>
+              <span data-win-bind="textContent: data.length"></span>
+          </p>
+      </span>
+      <span style="display: inline-block; float: right;">
+        <button class="win-button" data-win-bind="onclick: eh.toggleStripes">
+          Toggle Odd/Even
+        </button>
+      </span>
+    </div>
+    <div class="footer">
+        <div>
+          <button class="win-button" 
+                  data-win-bind="onclick: eh.backToTop">
+            Back to Top
+          </button>
+        </div>
+        <div class="status">
+            <div>Loading more items </div>
+            <progress class="win-progress-bar progress hide"></progress>
+        </div>
+    </div>
+</div>
+
+<div id="listView"
+     class="listView stripes win-selectionstylefilled "
+     data-win-control="WinJS.UI.ListView"
+     data-win-options="{
+            itemDataSource: Sample.ListView.data.dataSource,
+            itemTemplate: select('.smallListIconTextTemplate'),
+            header: select('.header'),
+            footer: select('.footer'),
+            onheadervisibilitychanged: Sample.ListView.eh.headerVisibility,
+            onfootervisibilitychanged: Sample.ListView.eh.footerVisibility,
+            layout: { type: WinJS.UI.ListLayout, groupHeaderPosition: 'top'},
+            groupDataSource: Sample.ListView.data.groups.dataSource,
+            groupHeaderTemplate: select('.listLayoutTopHeaderTemplate'),                        
+            selectionMode: 'none',
+            tapBehavior: 'none'
+        }">
+</div>

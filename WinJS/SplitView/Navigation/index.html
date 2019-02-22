@@ -1,0 +1,82 @@
+<!-- https://cdnjs.cloudflare.com/ajax/libs/winjs/4.4.3/js/base.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/winjs/4.4.3/js/ui.js -->
+
+<html class="win-hoverable">
+<head>
+    <title>WinJS: SplitView and XYFocus</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+</head>
+<body class="win-type-body">
+<div id="content">
+    <div id="app">
+        <div class="splitView win-splitview win-disposable win-splitview-placementleft win-splitview-closeddisplayinline win-splitview-openeddisplayoverlay win-splitview-pane-closed"
+             data-win-control="WinJS.UI.SplitView" 
+             id="element__1">
+                <div class="win-splitview-pane" 
+                     tabindex="-1">
+                    <!-- Pane area -->
+                    <div>
+                        <div class="header">
+                            <button tabindex="1" 
+                                    class="win-splitviewpanetoggle start"
+                                    data-win-control="WinJS.UI.SplitViewPaneToggle"
+                                    data-win-options="{ splitView: select('.splitView') }" 
+                                    type="button"></button>
+                            <div class="title" style="padding-left: 10px;">SplitView Pane area</div>
+                        </div>
+
+                        <div class="nav-commands">
+                            <div tabindex="2" 
+                                 data-win-control="WinJS.UI.SplitViewCommand"
+                                 data-win-options="{ label: 'Home', icon: 'home', default: true}">
+                            </div>
+                            <div tabindex="3" 
+                                 data-win-control="WinJS.UI.SplitViewCommand"
+                                 data-win-options="{ label: 'Favorite', icon: 'favorite', url: 's.codepen.io'}"
+                                 class="win-navbarcommand win-disposable">
+                            </div>
+                          
+                            <div tabindex="4" 
+                                 data-win-control="WinJS.UI.SplitViewCommand "
+                                 data-win-options="{ label: 'Settings', icon: 'settings'}"
+                                 class="win-navbarcommand win-disposable">
+                            </div>
+                          
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="win-splitview-contentwrapper" 
+                 style="position: absolute; top: 0px; margin-left: 50px;">
+                <div class="win-splitview-content">
+                    <!-- Content area -->
+                    <div class="contenttext">
+                      <h2 class="win-h2">SplitView Content area</h2>
+                      
+                      <table>
+                        <tr>
+                            <td class="verticalstacking">
+                                <div id="splitViewFocusToggle" 
+                                     data-win-control="WinJS.UI.ToggleSwitch" 
+                                     data-win-options="{title: 'SplitView Toggle Button Default Focus (XYFocus)', checked: false, onchange: toggleSplitViewFocus}">
+                                </div>
+                            </td>
+                        </tr>
+                      </table>             
+                      <p>Use the keyboard arrows to navigate the menu.</p>
+                      <p>Press enter when SplitView toggle button acquires focus</p>
+                      <p>The toggle on/off button activates the focus on the SplitView toggle button</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>
