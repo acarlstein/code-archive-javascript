@@ -1,5 +1,17 @@
 # RabbitMQ
 
+## Things to Have In Consideration
+
+* RabbitMQ will not allow you to redefine an existing queue with different parameters
+  * It may return an error to your applicatoin if you do that
+* To increase the changes that a messages are not lost, mark both the queue and message as durable
+* To deal with RabbitMQ restarts, mark your messages as persistent.
+  * The persistent property used to mark messages do not guarantee the messages will not be lost
+    * The property only indicates to RabbitMQ to store messages in the disk
+    * Use 'publisher confirms' if you need a stronger guarantee
+
+
+
 ## RabbitMQ Tips
 
 ### Connections and Channels
