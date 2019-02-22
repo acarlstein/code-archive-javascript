@@ -1,16 +1,113 @@
 # RabbitMQ
 
+## Messages Properties
+
+* content_type: describes mime-type encoding. i.e.: application/json
+* reply_to: Used commonly to indicate a callback queue
+* correlation_id (optional): Useful when working with Remote Procedure Call (RPC)
+  * Use a unique value for every request
+  * If the correlation_id value is unknown, it may gets safely discarded
+  * It helps to prevent duplicate responses
+* persistent: Mark a message as persistent
+  *  The persistent property used to mark messages do not guarantee the messages will not be lost
+
+## Exchange Types
+
+### Direct Exchance
+
+The direct exchange allows you to send messages directly to a queue using a binding key that matches the routing key.
+
+* This exchange cannot do routing based on multiple criteria. 
+  * Check Topic Exchange for this.
+
+### Topic Exchance
+
+The topic exchange is similar to the direct exchange; however, it allows for a multiple criteria for the routing key
+
+For example, we can have ```<corporation>.<department>.<division>.<team>```.
+
+If we wish to send messages to all cleaning teams of all departments, we would do:
+```your_corporation_name.*.cleaning_division.*```
+
+If we wish to send a message to everyone in the corporation, we could do:
+```your_corporation_name.#```
+
+* Messages can't have an arbitrary routing key (binding key) as in the Direct Exchange
+* Routing keys:
+  * must be a list of words, delimited by dots.
+  * must used a start '*' to substitute exactly one word
+  * must use a hash '#' to substitute zero or more words
+    * Similar to Fanout Exchange, queues bound to the hash binding key will receive all the messages regardless of the routing key
+* When start or hashes are not used in the bindings, the topic exchange behaves as a direct exchange.
+
+### Headers Exchance
+
+### Fanout Exchance
+
+The fanout exchange makes sure to broadcast all the messages to all the queues binded to it.
+
+* It is only capable of mindless broadcasting
+
+## Bindings
+
+We call bindings the relationships between exchanges and queues.
+For exchanges such as the Fanout Exchange, we are required to create such bindings so the fanout knows which queues should be receving the messages.
+
+* Bindings can have names
+* In the Fanout Exchange, the binding name is ignored
+* We refer to binding keys as Routing keys when working with exchanges such as Direct Exchange
+* We can bind multiple queues with the same binding key
+  * For example, in Direct Exchange, the exchange can use the same binding key (routing key) to ensure two or more queues receive the message.
+
+## Subcribing
+
+* We can create a new binding for each severity of message
+  * This means that we can send info, error, warning messages to different queues based on the severity they have.
+
+## Remote Procedure Call (RPC)
+
+Run a function on a remote location (server) and wait for the result come back (to our client)
+
+When doing a request message, the server needs to know which "callback" queue address the response message will go back.
+
+* Avoid using RPC if possible. Its better to use an asynchronous pipeline.
+  * RPC blocks
+* Do not confuse the call to a local function with the remote one
+* Make sure to have all your dependencies documented and clear
+* Handle error cases such as timeouts and such
+
+
 ## Things to Have In Consideration
 
 * RabbitMQ will not allow you to redefine an existing queue with different parameters
   * It may return an error to your applicatoin if you do that
-* To increase the changes that a messages are not lost, mark both the queue and message as durable
-* To deal with RabbitMQ restarts, mark your messages as persistent.
-  * The persistent property used to mark messages do not guarantee the messages will not be lost
-    * The property only indicates to RabbitMQ to store messages in the disk
-    * Use 'publisher confirms' if you need a stronger guarantee
 
+### Durable
 
+To increase the changes that a messages are not lost, mark both the queue and message as durable
+
+### Persistent
+
+To deal with RabbitMQ restarts, mark your messages as persistent.
+
+* The persistent property used to mark messages do not guarantee the messages will not be lost
+  * The property only indicates to RabbitMQ to store messages in the disk
+  * Use 'publisher confirms' if you need a stronger guarantee
+
+### Prefetch
+
+Setting a channel with prefecth of value 1 tells RabbitMQ to not give more than one message to a worker at a time
+  * RabbitMQ will not dispatch another message to a worker while the previous message has not being processed and acknowledged
+
+### Temporary Queues using Exclusive Property
+
+Temporary queues are queues created by RabbitMQ with a random name.
+To create them, do not supply a name for the queue and set exclusive to true.
+
+  * The random queue name will have this format: ```amq.gen-JzTY20BRgKO-HjmUJj0wLg```
+  * We don't need to create a fresh, empty queue
+  * When the consumer disconnect, the queue is automatically deleted
+  
 
 ## RabbitMQ Tips
 
